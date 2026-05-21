@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>星野防红链接生成器 | 安全稳定 永久免费</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="专业的防红链接生成工具，安全稳定，永久免费使用">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/haodai888/static@main/favicon/link.ico" type="image/x-icon">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6366f1',
+            secondary: '#10b981',
+            accent: '#8b5cf6',
+            dark: '#1e293b',
+            light: '#f8fafc'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'glow': 'glow 2s ease-in-out infinite alternate',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' },
+            },
+            glow: {
+              from: { 'box-shadow': '0 0 20px -10px #6366f1' },
+              to: { 'box-shadow': '0 0 20px -5px #6366f1, 0 0 30px -10px #8b5cf6' }
+            }
+          }
+        },
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .card-shadow {
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+      }
+      .card-shadow-hover {
+        box-shadow: 0 30px 60px -12px rgba(99, 102, 241, 0.25);
+      }
+      .btn-gradient {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      }
+      .btn-gradient:hover {
+        background: linear-gradient(135deg, #5a5fef 0%, #7c3aed 100%);
+      }
+      .btn-gradient-secondary {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      }
+      .btn-gradient-secondary:hover {
+        background: linear-gradient(135deg, #0da271 0%, #047857 100%);
+      }
+      .bg-gradient-primary {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+      }
+      .animate-fadeIn {
+        animation: fadeIn .55s ease-out;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+    }
+    /* 颜色选择器样式 */
+    .color-radio:checked + label {
+      transform: scale(1.15);
+      box-shadow: 0 0 0 3px white, 0 0 0 5px #6366f1;
+    }
+    /* 自定义滚动条 */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c7d2fe;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a5b4fc;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen flex items-center justify-center px-4 py-8 font-sans text-dark">
+  <!-- 背景装饰元素 -->
+  <div class="fixed top-10 left-10 w-20 h-20 bg-purple-200 rounded-full opacity-30 animate-float"></div>
+  <div class="fixed bottom-10 right-10 w-16 h-16 bg-indigo-300 rounded-full opacity-40 animate-float" style="animation-delay: 2s;"></div>
+  <div class="fixed top-1/3 right-1/4 w-12 h-12 bg-pink-200 rounded-full opacity-50 animate-float" style="animation-delay: 4s;"></div>
+
+  <div class="container max-w-lg w-full bg-white/80 rounded-3xl card-shadow transition-all duration-500 hover:card-shadow-hover overflow-hidden backdrop-blur-xl border border-white/60 relative z-10">
+    <!-- 顶部装饰 -->
+    <div class="h-2 bg-gradient-primary"></div>
+
+    <!-- Logo与标题 -->
+    <div class="flex justify-center mt-6">
+      <div class="w-20 h-20 flex items-center justify-center rounded-2xl bg-gradient-primary text-white text-3xl animate-glow relative">
+        <i class="fa fa-link z-10 relative"></i>
+        <div class="absolute inset-0 bg-gradient-primary rounded-2xl opacity-70 blur-md"></div>
+      </div>
+    </div>
+    <div class="text-center pt-3 pb-2 px-6">
+      <h1 class="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent drop-shadow-sm tracking-tight mb-2">星野防红链接生成器</h1>
+      <p class="text-gray-600 text-sm mb-1">安全转换 · 稳定防红 · 永久免费</p>
+      <div class="h-1 w-20 bg-gradient-to-r from-primary to-accent rounded-full mx-auto mt-2"></div>
+    </div>
+
+    <!-- 注意事项 -->
+    <div class="mx-6 mt-4 p-3 bg-gradient-to-r from-amber-50 to-yellow-50 border-l-4 border-amber-400 rounded-xl shadow-sm flex items-start">
+      <span class="mt-0.5 text-amber-500 text-lg"><i class="fa fa-info-circle"></i></span>
+      <span class="ml-2 text-amber-800 text-xs">请输入以 <span class="font-semibold">http://</span> 或 <span class="font-semibold">https://</span> 开头的网址</span>
+    </div>
+
+    <!-- 输入区域 -->
+    <div class="p-6 pt-4">
+      <label for="targetUrl" class="block text-gray-700 font-medium mb-3 text-sm">
+        <i class="fa fa-globe mr-2 text-primary"></i> 目标网址
+      </label>
+      <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500">
+          <i class="fa fa-link"></i>
+        </span>
+        <input 
+          type="text" 
+          id="targetUrl" 
+          placeholder="http://或https://开头的网址" 
+          class="w-full pl-12 pr-4 py-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 text-sm bg-white/70 shadow-sm"
+          autocomplete="off"
+        >
+      </div>
+
+      <!-- 颜色选择器 -->
+      <div class="mt-6">
+        <span class="text-sm text-gray-700 font-medium mb-3 block">
+          <i class="fa fa-paint-brush mr-2 text-primary"></i> 二维码颜色：
+        </span>
+        <div class="flex flex-wrap gap-3">
+          <input type="radio" name="qrcolor" id="qrcolor1" class="hidden color-radio" value="#6366f1" checked>
+          <label for="qrcolor1" class="w-8 h-8 rounded-full border-2 border-white shadow-md flex items-center justify-center cursor-pointer transition-all duration-300" style="background:#6366f1" title="靛蓝色"></label>
+          <input type="radio" name="qrcolor" id="qrcolor2" class="hidden color-radio" value="#10b981">
+          <label for="qrcolor2" class="w-8 h-8 rounded-full border-2 border-white shadow-md flex items-center justify-center cursor-pointer transition-all duration-300" style="background:#10b981" title="翡翠绿"></label>
+          <input type="radio" name="qrcolor" id="qrcolor3" class="hidden color-radio" value="#ef4444">
+          <label for="qrcolor3" class="w-8 h-8 rounded-full border-2 border-white shadow-md flex items-center justify-center cursor-pointer transition-all duration-300" style="background:#ef4444" title="活力红"></label>
+          <input type="radio" name="qrcolor" id="qrcolor4" class="hidden color-radio" value="#f59e0b">
+          <label for="qrcolor4" class="w-8 h-8 rounded-full border-2 border-white shadow-md flex items-center justify-center cursor-pointer transition-all duration-300" style="background:#f59e0b" title="琥珀黄"></label>
+          <input type="radio" name="qrcolor" id="qrcolor5" class="hidden color-radio" value="#000000">
+          <label for="qrcolor5" class="w-8 h-8 rounded-full border-2 border-white shadow-md flex items-center justify-center cursor-pointer transition-all duration-300" style="background:#000000" title="经典黑"></label>
+        </div>
+      </div>
+
+      <!-- 生成按钮 -->
+      <button 
+        class="btn-gradient w-full py-4 rounded-xl text-white font-semibold mt-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-base flex items-center justify-center"
+        onclick="generate()"
+        id="generateBtn"
+      >
+        <i class="fa fa-magic mr-2"></i> 生成防红链接
+      </button>
+    </div>
+
+    <!-- 结果区域 -->
+    <div id="result" class="hidden p-6 mx-3 mt-2 animate-fadeIn">
+      <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-primary rounded-2xl p-5 mb-5 shadow-md">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-gray-700 font-semibold text-sm flex items-center">
+            <i class="fa fa-shield mr-2 text-primary"></i> 防红链接
+          </span>
+          <span class="text-xs bg-primary/20 text-primary px-3 py-1 rounded-full font-medium">已加密</span>
+        </div>
+        <div id="output" class="text-sm text-blue-800 break-all select-all relative font-mono py-3 px-4 rounded-xl bg-white/80 border border-blue-200/50 shadow-sm">
+          <!-- 链接将在这里生成 -->
+        </div>
+        <button 
+          class="btn-gradient-secondary w-full py-3 rounded-xl text-white font-medium mt-4 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 text-base flex items-center justify-center"
+          onclick="copyResult()"
+          id="copyBtn"
+        >
+          <i class="fa fa-clipboard mr-2"></i> 一键复制链接
+        </button>
+      </div>
+      <!-- 二维码区域 -->
+      <div class="text-center pt-2">
+        <h3 class="text-gray-600 font-medium text-sm mb-3 tracking-wide flex items-center justify-center">
+          <i class="fa fa-qrcode mr-2 text-primary"></i> 手机扫码访问
+        </h3>
+        <div id="qrcode" class="mx-auto p-4 bg-white rounded-2xl shadow-md w-max border border-gray-100"></div>
+        <p class="text-xs text-gray-500 mt-3 flex items-center justify-center">
+          <i class="fa fa-info-circle mr-1"></i> 长按二维码可保存图片
+        </p>
+      </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div class="p-5 mt-2 border-t border-gray-200/60 text-center text-xs text-gray-500 bg-white/40">
+      <p class="mb-2">
+      </p>
+      <div id="wechatModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white p-5 rounded-2xl shadow-2xl max-w-xs w-full relative animate-fadeIn border border-white/20">
+          <span class="absolute top-3 right-3 text-gray-400 cursor-pointer text-xl font-bold hover:text-gray-600 transition-colors" onclick="closeWechat()">&times;</span>
+          <div class="text-center mb-2">
+            <h3 class="font-bold text-gray-800 text-lg">扫码咨询</h3>
+            <p class="text-gray-600 text-sm mt-1">专业搭建 · 技术指导</p>
+          </div>
+          <img src="https://img.cdn1.vip/i/68f4b96cbea05_1760868716" alt="微信二维码" class="w-full rounded-xl mb-3 border border-gray-200">
+          <div class="text-sm text-gray-700 text-center bg-gray-50 py-2 rounded-lg">扫一扫联系客服咨询详情</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast 提示 -->
+  <div id="toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 px-5 py-3 rounded-xl shadow-2xl z-50 hidden text-white font-medium text-sm backdrop-blur-md border border-white/20"></div>
+
+  <script>
+    // 获取当前路径
+    function getCurrentPath() {
+      const path = window.location.pathname;
+      // 如果路径以文件名结尾，则去掉文件名部分
+      if (path.endsWith('.html') || path.endsWith('.htm')) {
+        return path.substring(0, path.lastIndexOf('/') + 1);
+      }
+      return path.endsWith('/') ? path : path + '/';
+    }
+
+    // Base64编码函数
+    function base64Encode(str) {
+      return btoa(unescape(encodeURIComponent(str)));
+    }
+
+    // 生成防红链接
+    function generate() {
+      var url = document.getElementById('targetUrl').value.trim();
+      var btn = document.getElementById('generateBtn');
+      var qrcolor = document.querySelector('input[name="qrcolor"]:checked').value || "#6366f1";
+      
+      if (!url) {
+        showToast('请输入目标网址！', 'error');
+        return;
+      }
+      if (!/^https?:\/\//i.test(url)) {
+        showToast('请输入以 http:// 或 https:// 开头的链接！', 'error');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i> 生成中...';
+
+      setTimeout(() => {
+        var encodedUrl = base64Encode(url);
+        var currentPath = getCurrentPath();
+        var resultUrl = window.location.origin + currentPath + 'ink.html?c=' + encodedUrl;
+        
+        document.getElementById('output').textContent = resultUrl;
+        document.getElementById('result').classList.remove('hidden');
+        
+        // 生成二维码
+        var qrcodeDiv = document.getElementById('qrcode');
+        qrcodeDiv.innerHTML = "";
+        new QRCode(qrcodeDiv, {
+          text: resultUrl,
+          width: Math.min(200, window.innerWidth * 0.6),
+          height: Math.min(200, window.innerWidth * 0.6),
+          colorDark: qrcolor,
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H
+        });
+
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa fa-magic mr-2"></i> 生成防红链接';
+        showToast('防红链接生成成功！', 'success');
+        
+        // 滚动到结果区域
+        document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 800);
+    }
+
+    // 复制结果到剪贴板
+    function copyResult() {
+      var text = document.getElementById('output').textContent;
+      var btn = document.getElementById('copyBtn');
+      
+      if (!text) {
+        showToast('没有可复制的链接！', 'error');
+        return;
+      }
+      
+      btn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i> 复制中...';
+      
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast('链接已复制到剪贴板！', 'success');
+          btn.innerHTML = '<i class="fa fa-check mr-2"></i> 复制成功';
+          setTimeout(() => {
+            btn.innerHTML = '<i class="fa fa-clipboard mr-2"></i> 一键复制链接';
+          }, 2000);
+        }).catch(err => {
+          showToast('复制失败：' + err, 'error');
+          btn.innerHTML = '<i class="fa fa-clipboard mr-2"></i> 一键复制链接';
+        });
+      } else {
+        var textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          showToast('链接已复制到剪贴板！', 'success');
+          btn.innerHTML = '<i class="fa fa-check mr-2"></i> 复制成功';
+          setTimeout(() => {
+            btn.innerHTML = '<i class="fa fa-clipboard mr-2"></i> 一键复制链接';
+          }, 2000);
+        } catch (err) {
+          showToast('复制失败，请手动复制', 'error');
+          btn.innerHTML = '<i class="fa fa-clipboard mr-2"></i> 一键复制链接';
+        }
+        document.body.removeChild(textarea);
+      }
+    }
+
+    // Toast 提示
+    function showToast(message, type = 'info') {
+      var toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = 'fixed bottom-8 left-1/2 transform -translate-x-1/2 px-5 py-3 rounded-xl shadow-2xl z-50 text-white font-medium text-sm animate-fadeIn backdrop-blur-md border border-white/20';
+      
+      if (type === 'success') {
+        toast.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+      } else if (type === 'error') {
+        toast.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+      } else {
+        toast.style.background = 'linear-gradient(135deg, #6366f1, #8b5cf6)';
+      }
+      
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2800);
+    }
+
+    // 微信弹窗
+    function showWechat() {
+      document.getElementById('wechatModal').classList.remove('hidden');
+    }
+    
+    function closeWechat() {
+      document.getElementById('wechatModal').classList.add('hidden');
+    }
+
+    // 点击模态框外部关闭
+    document.getElementById('wechatModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeWechat();
+      }
+    });
+
+    // 按ESC键关闭模态框
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeWechat();
+      }
+    });
+  </script>
+
+
+  <script type="text/javascript" src="https://js.users.51.la/21988875.js"></script>
+</body>
+</html>
