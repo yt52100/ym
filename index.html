@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="星野防红链接生成器 - 安全防屏蔽，永久免费，智能加密跳转">
+  <title>星野防红 | 智能链接生成器</title>
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/haodai888/static@main/favicon/link.ico" type="image/x-icon">
+  <!-- Tailwind + Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <!-- 自定义配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6366f1',
+            secondary: '#10b981',
+            accent: '#8b5cf6',
+            glass: 'rgba(255,255,255,0.7)',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'SF Pro Display', 'Segoe UI', 'sans-serif'],
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'glow-pulse': 'glowPulse 2.8s ease-in-out infinite alternate',
+            'fade-slide': 'fadeSlide 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards',
+            'scale-in': 'scaleIn 0.4s ease-out',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-12px)' },
+            },
+            glowPulse: {
+              '0%': { boxShadow: '0 0 12px -8px #6366f1', opacity: '0.8' },
+              '100%': { boxShadow: '0 0 28px -4px #8b5cf6', opacity: '1' },
+            },
+            fadeSlide: {
+              '0%': { opacity: '0', transform: 'translateY(18px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            scaleIn: {
+              '0%': { opacity: '0', transform: 'scale(0.96)' },
+              '100%': { opacity: '1', transform: 'scale(1)' },
+            }
+          },
+          backdropBlur: {
+            xs: '2px',
+          }
+        },
+      }
+    }
+  </script>
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      background: radial-gradient(circle at 10% 20%, rgba(99,102,241,0.08), rgba(139,92,246,0.03));
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.5);
+      transition: all 0.35s ease;
+    }
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.88);
+      border-color: rgba(99,102,241,0.3);
+      box-shadow: 0 25px 45px -12px rgba(99,102,241,0.25);
+    }
+    .btn-modern {
+      background: linear-gradient(105deg, #6366f1 0%, #8b5cf6 100%);
+      transition: all 0.25s ease;
+      background-size: 120% auto;
+    }
+    .btn-modern:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(105deg, #5a5fef 0%, #7c3aed 100%);
+      box-shadow: 0 12px 22px -12px #6366f1;
+    }
+    .qr-container canvas,
+    .qr-container img {
+      border-radius: 20px;
+      transition: transform 0.2s ease;
+    }
+    .qr-container:hover canvas,
+    .qr-container:hover img {
+      transform: scale(1.02);
+    }
+    .color-radio:checked + label {
+      transform: scale(1.18);
+      box-shadow: 0 0 0 3px white, 0 0 0 5px #6366f1, 0 8px 18px -6px rgba(0,0,0,0.2);
+    }
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #eef2ff;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #a5b4fc;
+      border-radius: 10px;
+    }
+    .copy-success-animation {
+      animation: pulseRing 0.6s ease-out;
+    }
+    @keyframes pulseRing {
+      0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
+      100% { box-shadow: 0 0 0 12px rgba(16,185,129,0); }
+    }
+    .result-link {
+      word-break: break-all;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      letter-spacing: -0.2px;
+    }
+    /* 移动端优化 */
+    @media (max-width: 768px) {
+      .glass-card {
+        backdrop-filter: blur(12px);
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center px-4 py-6 md:py-10 font-sans antialiased">
+  <!-- 漂浮装饰物 更有层次感 -->
+  <div class="fixed top-12 left-6 w-28 h-28 bg-indigo-200 rounded-full blur-2xl opacity-30 animate-float pointer-events-none"></div>
+  <div class="fixed bottom-12 right-8 w-36 h-36 bg-purple-300 rounded-full blur-3xl opacity-20 animate-float pointer-events-none" style="animation-delay: 2.5s"></div>
+  <div class="fixed top-1/3 left-[85%] w-20 h-20 bg-pink-200 rounded-full blur-2xl opacity-25 animate-float pointer-events-none" style="animation-delay: 4s"></div>
+
+  <!-- 主容器: 响应式横向+纵向 -->
+  <div class="max-w-6xl w-full mx-auto glass-card rounded-3xl shadow-2xl transition-all duration-500 overflow-hidden">
+    <!-- 顶部流光装饰条 -->
+    <div class="h-1.5 bg-gradient-to-r from-primary via-accent to-secondary w-full"></div>
+    
+    <!-- 主体内容：PC端左右，移动端上下 -->
+    <div class="flex flex-col md:flex-row">
+      <!-- 左侧：配置区 (生成参数) -->
+      <div class="flex-1 p-5 md:p-7 space-y-5 border-b md:border-b-0 md:border-r border-gray-200/60">
+        <!-- Logo + 品牌 -->
+        <div class="flex items-center gap-3 mb-1">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-indigo-200/50">
+            <i class="fa fa-link text-white text-xl"></i>
+          </div>
+          <div>
+            <h1 class="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-indigo-700 to-purple-700 bg-clip-text text-transparent tracking-tight">星野防红</h1>
+            <p class="text-xs text-gray-500 flex items-center gap-1"><i class="fa fa-shield text-primary text-[10px]"></i> 安全加密 · 智能跳转</p>
+          </div>
+        </div>
+        <!-- 轻提示栏 -->
+        <div class="bg-gradient-to-r from-amber-50/70 to-yellow-50/70 rounded-2xl p-3 flex items-start gap-2 border border-amber-200/40">
+          <i class="fa fa-info-circle text-amber-500 mt-0.5"></i>
+          <span class="text-amber-800 text-xs leading-relaxed">请输入以 <span class="font-bold">http://</span> 或 <span class="font-bold">https://</span> 开头的完整网址</span>
+        </div>
+        <!-- URL输入框 -->
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 text-sm font-semibold text-gray-700"><i class="fa fa-globe text-primary"></i> 目标网址</label>
+          <div class="relative group">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors"><i class="fa fa-link"></i></span>
+            <input type="text" id="targetUrl" placeholder="https:// 你的网址" 
+                   class="w-full pl-11 pr-4 py-3.5 rounded-xl border border-gray-200 bg-white/70 focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-all text-sm shadow-sm">
+          </div>
+        </div>
+        <!-- 二维码颜色选择器 精美现代 -->
+        <div>
+          <div class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3"><i class="fa fa-paint-brush text-primary"></i> 二维码色彩</div>
+          <div class="flex flex-wrap gap-3.5 items-center">
+            <input type="radio" name="qrcolor" id="qrcolor1" class="hidden color-radio" value="#6366f1" checked>
+            <label for="qrcolor1" class="w-9 h-9 rounded-full shadow-md cursor-pointer transition-all duration-200 border-2 border-white" style="background:#6366f1; box-shadow: 0 4px 10px rgba(99,102,241,0.3);" title="星野靛蓝"></label>
+            <input type="radio" name="qrcolor" id="qrcolor2" class="hidden color-radio" value="#10b981">
+            <label for="qrcolor2" class="w-9 h-9 rounded-full shadow-md cursor-pointer transition-all duration-200 border-2 border-white" style="background:#10b981; box-shadow: 0 4px 10px rgba(16,185,129,0.3);" title="翡翠绿"></label>
+            <input type="radio" name="qrcolor" id="qrcolor3" class="hidden color-radio" value="#ef4444">
+            <label for="qrcolor3" class="w-9 h-9 rounded-full shadow-md cursor-pointer transition-all duration-200 border-2 border-white" style="background:#ef4444; box-shadow: 0 4px 10px rgba(239,68,68,0.3);" title="活力红"></label>
+            <input type="radio" name="qrcolor" id="qrcolor4" class="hidden color-radio" value="#f59e0b">
+            <label for="qrcolor4" class="w-9 h-9 rounded-full shadow-md cursor-pointer transition-all duration-200 border-2 border-white" style="background:#f59e0b; box-shadow: 0 4px 10px rgba(245,158,11,0.3);" title="琥珀金"></label>
+            <input type="radio" name="qrcolor" id="qrcolor5" class="hidden color-radio" value="#1e293b">
+            <label for="qrcolor5" class="w-9 h-9 rounded-full shadow-md cursor-pointer transition-all duration-200 border-2 border-white" style="background:#1e293b; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" title="深空黑"></label>
+            <div class="w-px h-6 bg-gray-200 mx-1 hidden sm:block"></div>
+            <span class="text-[11px] text-gray-400">动态配色</span>
+          </div>
+        </div>
+        <!-- 生成按钮 -->
+        <button id="generateBtn" onclick="generate()" 
+                class="btn-modern w-full py-3.5 rounded-xl text-white font-bold shadow-xl flex items-center justify-center gap-2 text-base transition-all active:scale-[0.98]">
+          <i class="fa fa-magic"></i> 生成防红链接
+        </button>
+        <!-- 安全标签 -->
+        <div class="flex justify-center gap-4 text-[11px] text-gray-400 pt-2">
+          <span class="flex items-center gap-1"><i class="fa fa-lock text-primary/70"></i> SSL加密</span>
+          <span class="flex items-center gap-1"><i class="fa fa-bolt text-primary/70"></i> 毫秒跳转</span>
+          <span class="flex items-center gap-1"><i class="fa fa-heart text-primary/70"></i> 永久免费</span>
+        </div>
+      </div>
+
+      <!-- 右侧：结果展示区域 (含智能占位与结果面板) 横向优雅 -->
+      <div class="flex-1 p-5 md:p-7 bg-white/40 backdrop-blur-sm flex flex-col justify-start">
+        <!-- 未生成时的占位符（优雅引导） -->
+        <div id="rightPlaceholder" class="flex flex-col items-center justify-center text-center py-8 md:py-12 transition-all duration-300">
+          <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center shadow-inner">
+            <i class="fa fa-qrcode text-5xl text-indigo-300/70"></i>
+          </div>
+          <h3 class="mt-5 text-lg font-semibold text-gray-600">等待生成</h3>
+          <p class="text-xs text-gray-400 max-w-[200px] mt-1">填写网址并点击上方按钮，防红链接与二维码将在此呈现</p>
+          <div class="mt-4 flex gap-1 text-gray-300 text-sm">
+            <i class="fa fa-arrow-left"></i> <i class="fa fa-arrow-right"></i>
+          </div>
+        </div>
+
+        <!-- 结果区域（生成后显示，原功能完全保留） -->
+        <div id="result" class="hidden animate-fade-slide space-y-5">
+          <!-- 防红链接卡片 -->
+          <div class="bg-white/80 rounded-2xl border border-indigo-100/60 shadow-md p-4 transition-all">
+            <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
+              <span class="text-sm font-bold text-gray-700 flex items-center gap-1.5"><i class="fa fa-shield text-primary"></i> 防红加密链接</span>
+              <span class="text-[10px] font-mono bg-primary/10 text-primary px-2.5 py-1 rounded-full">Base64 安全跳转</span>
+            </div>
+            <div id="output" class="result-link bg-gray-50/80 p-3 rounded-xl border border-gray-200 text-indigo-800 text-sm select-all font-mono break-all leading-relaxed"></div>
+            <button id="copyBtn" onclick="copyResult()" 
+                    class="mt-4 w-full bg-gradient-to-r from-secondary to-emerald-600 hover:from-emerald-600 hover:to-secondary text-white font-semibold py-2.5 rounded-xl shadow-md transition-all duration-200 flex items-center justify-center gap-2 text-sm">
+              <i class="fa fa-clipboard"></i> 一键复制链接
+            </button>
+          </div>
+          <!-- 二维码区域 现代圆润 -->
+          <div class="bg-white/70 rounded-2xl border border-gray-100 shadow-sm p-4 text-center">
+            <div class="flex items-center justify-center gap-2 text-sm font-medium text-gray-600 mb-3">
+              <i class="fa fa-mobile-alt text-primary"></i> 手机扫码直达
+            </div>
+            <div id="qrcode" class="qr-container flex justify-center p-2 bg-white rounded-2xl inline-block mx-auto"></div>
+            <p class="text-[11px] text-gray-400 mt-3 flex items-center justify-center gap-1"><i class="fa fa-hand-peace-o"></i> 长按二维码可保存图片</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部简约信息 + 微信弹窗保留 -->
+    <div class="border-t border-gray-200/40 px-6 py-3 flex justify-between items-center text-[11px] text-gray-400 bg-white/30">
+      <span>© 星野安全跳转 · 智能防红引擎</span>
+      <div class="flex gap-3">
+        <span><i class="fa fa-check-circle text-secondary"></i> 稳定在线</span>
+        <!-- 客服悬浮触发 (可选但保留微信弹窗，为了不改变原有功能增加客服入口美观) -->
+        <button onclick="showWechat()" class="hover:text-primary transition flex items-center gap-1"><i class="fa fa-wechat text-green-500"></i> 咨询</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 微信模态框 (保留原有逻辑) -->
+  <div id="wechatModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 transition-all duration-200 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-xs w-full relative animate-scale-in overflow-hidden">
+      <span class="absolute top-3 right-4 text-gray-400 cursor-pointer text-2xl font-light hover:text-gray-600 transition" onclick="closeWechat()">&times;</span>
+      <div class="p-5 text-center">
+        <div class="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-3">
+          <i class="fa fa-wechat text-green-600 text-3xl"></i>
+        </div>
+        <h3 class="font-bold text-gray-800 text-lg">扫码联系客服</h3>
+        <p class="text-gray-500 text-xs mt-1">专业搭建 · 技术指导</p>
+        <div class="my-4 flex justify-center">
+          <img src="https://img.cdn1.vip/i/68f4b96cbea05_1760868716" alt="微信客服二维码" class="w-44 rounded-xl border border-gray-200 shadow-sm">
+        </div>
+        <div class="text-sm text-gray-700 bg-gray-50 py-2 rounded-xl">扫一扫 立即咨询</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast 组件 -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 hidden text-white text-sm font-medium rounded-2xl px-5 py-3 shadow-xl backdrop-blur-lg border border-white/20 transition-all"></div>
+
+  <script>
+    // ---------- 全局函数 (保留原始所有逻辑，增强占位符切换) ----------
+    function getCurrentPath() {
+      const path = window.location.pathname;
+      if (path.endsWith('.html') || path.endsWith('.htm')) {
+        return path.substring(0, path.lastIndexOf('/') + 1);
+      }
+      return path.endsWith('/') ? path : path + '/';
+    }
+
+    function base64Encode(str) {
+      return btoa(unescape(encodeURIComponent(str)));
+    }
+
+    // 生成防红链接核心 (升级后支持占位符隐藏)
+    function generate() {
+      const url = document.getElementById('targetUrl').value.trim();
+      const btn = document.getElementById('generateBtn');
+      const qrcolor = document.querySelector('input[name="qrcolor"]:checked').value || "#6366f1";
+      const resultDiv = document.getElementById('result');
+      const placeholder = document.getElementById('rightPlaceholder');
+
+      if (!url) {
+        showToast('请输入目标网址', 'error');
+        return;
+      }
+      if (!/^https?:\/\//i.test(url)) {
+        showToast('网址必须以 http:// 或 https:// 开头', 'error');
+        return;
+      }
+
+      // 按钮loading态
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i> 加密跳转链路中...';
+
+      setTimeout(() => {
+        try {
+          const encodedUrl = base64Encode(url);
+          const currentPath = getCurrentPath();
+          const resultUrl = window.location.origin + currentPath + 'ink.html?c=' + encodedUrl;
+          
+          // 更新链接显示
+          document.getElementById('output').textContent = resultUrl;
+          
+          // 切换显示：隐藏占位符，显示结果区域
+          if (placeholder) placeholder.style.display = 'none';
+          resultDiv.classList.remove('hidden');
+          
+          // 生成二维码（清空旧二维码并重绘）
+          const qrcodeDiv = document.getElementById('qrcode');
+          qrcodeDiv.innerHTML = "";
+          // 获取容器宽度响应式限制
+          const qrSize = Math.min(210, window.innerWidth * 0.5);
+          new QRCode(qrcodeDiv, {
+            text: resultUrl,
+            width: qrSize,
+            height: qrSize,
+            colorDark: qrcolor,
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+          });
+          
+          showToast('✨ 防红链接生成成功！', 'success');
+          // 平滑滚动到结果区域（PC/移动均友好）
+          resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } catch (err) {
+          showToast('生成异常，请重试', 'error');
+          console.error(err);
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa fa-magic mr-2"></i> 生成防红链接';
+        }
+      }, 380);
+    }
+
+    // 复制链接 (增强现代复制)
+    function copyResult() {
+      const text = document.getElementById('output').textContent;
+      const copyBtn = document.getElementById('copyBtn');
+      if (!text) {
+        showToast('无链接可复制', 'error');
+        return;
+      }
+      copyBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i> 复制中';
+      
+      const doCopy = () => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => {
+            showToast('✅ 链接已复制，安全可用', 'success');
+            copyBtn.innerHTML = '<i class="fa fa-check mr-2"></i> 已复制';
+            copyBtn.classList.add('copy-success-animation');
+            setTimeout(() => {
+              copyBtn.innerHTML = '<i class="fa fa-clipboard mr-2"></i> 一键复制链接';
+              copyBtn.classList.remove('copy-success-animation');
+            }, 2000);
+          }).catch(() => fallbackCopy(text, copyBtn));
+        } else {
+          fallbackCopy(text, copyBtn);
+        }
+      };
+      
+      const fallbackCopy = (txt, btnEl) => {
+        const textarea = document.createElement('textarea');
+        textarea.value = txt;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          showToast('📋 复制成功', 'success');
+          btnEl.innerHTML = '<i class="fa fa-check mr-2"></i> 复制成功';
+          setTimeout(() => {
+            btnEl.innerHTML = '<i class="fa fa-clipboard mr-2"></i> 一键复制链接';
+          }, 2000);
+        } catch (err) {
+          showToast('手动复制失败', 'error');
+          btnEl.innerHTML = '<i class="fa fa-clipboard mr-2"></i> 一键复制链接';
+        }
+        document.body.removeChild(textarea);
+      };
+      doCopy();
+    }
+
+    // 增强提示toast
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.remove('hidden');
+      let bgGradient = '';
+      if (type === 'success') bgGradient = 'linear-gradient(115deg, #10b981, #059669)';
+      else if (type === 'error') bgGradient = 'linear-gradient(115deg, #ef4444, #dc2626)';
+      else bgGradient = 'linear-gradient(115deg, #6366f1, #8b5cf6)';
+      toast.style.background = bgGradient;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2800);
+    }
+
+    // 微信弹窗控制（保留原始全部逻辑+额外优化）
+    function showWechat() {
+      document.getElementById('wechatModal').classList.remove('hidden');
+    }
+    function closeWechat() {
+      document.getElementById('wechatModal').classList.add('hidden');
+    }
+    
+    // 点击模态框外部关闭
+    document.getElementById('wechatModal').addEventListener('click', function(e) {
+      if (e.target === this) closeWechat();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeWechat();
+    });
+    
+    // 支持回车生成
+    document.getElementById('targetUrl').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') generate();
+    });
+    
+    // 额外自适应: 保证二维码尺寸在移动端不溢出，监听resize重新生成？为了美观当窗口变化时，二维码已存在重新刷新大小（可选增强）
+    // 简单处理：如果result可见并且二维码存在，窗口resize时重新刷新二维码保持清晰度与尺寸
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const resultDiv = document.getElementById('result');
+        if (resultDiv && !resultDiv.classList.contains('hidden')) {
+          const currentUrl = document.getElementById('output').textContent;
+          const qrcolor = document.querySelector('input[name="qrcolor"]:checked').value || "#6366f1";
+          const qrcodeDiv = document.getElementById('qrcode');
+          if (currentUrl && qrcodeDiv) {
+            const newSize = Math.min(210, window.innerWidth * 0.45);
+            qrcodeDiv.innerHTML = "";
+            new QRCode(qrcodeDiv, {
+              text: currentUrl,
+              width: newSize,
+              height: newSize,
+              colorDark: qrcolor,
+              colorLight: "#ffffff",
+              correctLevel: QRCode.CorrectLevel.H
+            });
+          }
+        }
+      }, 180);
+    });
+    
+    // 监听颜色选择变化，如果结果已经显示则动态更新二维码颜色（贴心功能）
+    const colorRadios = document.querySelectorAll('input[name="qrcolor"]');
+    colorRadios.forEach(radio => {
+      radio.addEventListener('change', function() {
+        const resultDiv = document.getElementById('result');
+        if (resultDiv && !resultDiv.classList.contains('hidden')) {
+          const currentUrl = document.getElementById('output').textContent;
+          if (currentUrl && currentUrl.trim() !== "") {
+            const newColor = this.value;
+            const qrcodeDiv = document.getElementById('qrcode');
+            const newSize = Math.min(210, window.innerWidth * 0.45);
+            qrcodeDiv.innerHTML = "";
+            new QRCode(qrcodeDiv, {
+              text: currentUrl,
+              width: newSize,
+              height: newSize,
+              colorDark: newColor,
+              colorLight: "#ffffff",
+              correctLevel: QRCode.CorrectLevel.H
+            });
+            showToast('二维码颜色已更新', 'info');
+          }
+        }
+      });
+    });
+
+    // 确保占位符在初始正常显示，result隐藏(已通过html hidden完成)
+    window.addEventListener('load', () => {
+      // 初始化确保占位符可见，result隐藏，避免任何遗漏
+      const placeholder = document.getElementById('rightPlaceholder');
+      const resultDiv = document.getElementById('result');
+      if (placeholder) placeholder.style.display = 'flex';
+      if (resultDiv) resultDiv.classList.add('hidden');
+      // 额外透明修复背景
+    });
+  </script>
+  <!-- 统计代码保留原样 -->
+  <script type="text/javascript" src="https://js.users.51.la/21988875.js"></script>
+</body>
+</html>
