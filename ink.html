@@ -1,112 +1,461 @@
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
-  <meta content="yes" name="apple-mobile-web-app-capable">
-  <meta content="yes" name="apple-touch-fullscreen">
-  <meta content="black" name="apple-mobile-web-app-status-bar-style">
-  <meta content="320" name="MobileOptimized">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0f172a">
+  <title>星野跳转 | 智能引导</title>
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/haodai888/static@main/favicon/link.ico" type="image/x-icon">
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <style>
-    .container {
-      width: 100px;
-      height: 100px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      animation: rotate-move 2s ease-in-out infinite;
-    }
-    .dot {
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      background-color: #000;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      margin: auto;
-    }
-    .dot-3 {
-      background-color: #f74d75;
-      animation: dot-3-move 2s ease infinite;
-    }
-    .dot-2 {
-      background-color: #10beae;
-      animation: dot-2-move 2s ease infinite;
-    }
-    .dot-1 {
-      background-color: #ffe386;
-      animation: dot-1-move 2s ease infinite;
-    }
-    @keyframes dot-3-move {
-      20% { transform: scale(1); }
-      45% { transform: translateY(-18px) scale(.45); }
-      60% { transform: translateY(-25px) scale(.45); }
-      80% { transform: translateY(-25px) scale(.45); }
-      100% { transform: translateY(0px) scale(1); }
-    }
-    @keyframes dot-2-move {
-      20% { transform: scale(1); }
-      45% { transform: translate(-16px, 12px) scale(.45); }
-      60% { transform: translate(-20px, 15px) scale(.45); }
-      80% { transform: translate(-20px, 15px) scale(.45); }
-      100% { transform: translateY(0px) scale(1); }
-    }
-    @keyframes dot-1-move {
-      20% { transform: scale(1); }
-      45% { transform: translate(16px, 12px) scale(.45); }
-      60% { transform: translate(20px, 15px) scale(.45); }
-      80% { transform: translate(20px, 15px) scale(.45); }
-      100% { transform: translateY(0px) scale(1); }
-    }
-    @keyframes rotate-move {
-      55% { transform: translate(-50%, -50%) rotate(0deg); }
-      80% { transform: translate(-50%, -50%) rotate(360deg); }
-      100% { transform: translate(-50%, -50%) rotate(360deg); }
-    }
-    .content {
-      height: 100%;
-      width: 100%;
-      position: fixed;
-      left: -2px;
-      top: -2px;
-    }
-    body {
-      background: #f5f7fa;
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #0a0f1f 0%, #0d1428 45%, #111c2f 100%);
+      font-family: system-ui, -apple-system, 'Segoe UI', 'SF Pro Text', 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+    /* 动态流光粒子背景 */
+    .bg-orbs {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.5;
+      animation: floatBlob 18s infinite alternate ease-in-out;
+    }
+    .orb1 {
+      width: 50vw;
+      height: 50vw;
+      background: radial-gradient(circle, #6366f1, #a855f7);
+      top: -20vh;
+      left: -15vw;
+      animation-duration: 22s;
+    }
+    .orb2 {
+      width: 40vw;
+      height: 40vw;
+      background: radial-gradient(circle, #0ea5e9, #2dd4bf);
+      bottom: -15vh;
+      right: -10vw;
+      animation-duration: 19s;
+      animation-delay: -3s;
+    }
+    .orb3 {
+      width: 35vw;
+      height: 35vw;
+      background: radial-gradient(circle, #f59e0b, #ec489a);
+      top: 40vh;
+      left: 65vw;
+      animation-duration: 25s;
+      opacity: 0.35;
+    }
+    @keyframes floatBlob {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(30px, 40px) scale(1.18); }
+    }
+    /* 主容器 玻璃质感 */
+    .guide-card {
+      position: relative;
+      z-index: 10;
+      max-width: 520px;
+      width: 90%;
+      margin: 24px auto;
+      background: rgba(20, 28, 45, 0.68);
+      backdrop-filter: blur(18px);
+      border-radius: 56px;
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 0.5px rgba(255, 255, 255, 0.08) inset;
+      transition: all 0.4s ease;
+      animation: fadeSlideUp 0.65s cubic-bezier(0.2, 0.9, 0.3, 1.1) forwards;
+    }
+    @keyframes fadeSlideUp {
+      0% { opacity: 0; transform: translateY(32px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .content-wrap {
+      padding: 32px 28px 40px;
+    }
+    .icon-badge {
+      background: linear-gradient(135deg, #6366f1, #c084fc);
+      width: 70px;
+      height: 70px;
+      border-radius: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 20px 35px -12px #6366f1;
+    }
+    .icon-badge i {
+      font-size: 38px;
+      color: white;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      background: linear-gradient(115deg, #e0e7ff, #c4b5fd, #a78bfa);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      text-align: center;
+      letter-spacing: -0.3px;
+      margin-bottom: 10px;
+    }
+    .sub {
+      text-align: center;
+      color: #94a3b8;
+      font-weight: 500;
+      font-size: 0.85rem;
+      border-bottom: 1px dashed rgba(99,102,241,0.4);
+      display: inline-block;
+      width: auto;
+      margin: 0 auto 20px;
+      padding-bottom: 6px;
+    }
+    .step-container {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 40px;
+      padding: 20px 22px;
+      margin: 24px 0;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(165, 180, 252, 0.25);
+    }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+    .step-item:last-child {
+      margin-bottom: 0;
+    }
+    .step-number {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(125deg, #1e293b, #0f172a);
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: #a5b4fc;
+      border: 1px solid #334155;
+      box-shadow: 0 8px 14px -6px #00000030;
+    }
+    .step-text {
+      flex: 1;
+      font-weight: 520;
+      font-size: 1rem;
+      color: #e2e8f0;
+      letter-spacing: -0.2px;
+    }
+    .step-text strong {
+      color: #facc15;
+      font-weight: 700;
+    }
+    .step-text .browser-icon {
+      background: #2d374b;
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      margin-left: 6px;
+      font-weight: 500;
+    }
+    .link-preview {
+      background: #0f172a80;
+      padding: 14px 16px;
+      border-radius: 28px;
+      margin: 20px 0 18px;
+      border: 1px solid #2d3a5e;
+      word-break: break-all;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.75rem;
+      color: #cbd5e6;
+      text-align: center;
+    }
+    .copy-btn {
+      background: linear-gradient(105deg, #6366f1, #8b5cf6);
+      width: 100%;
+      border: none;
+      padding: 16px 0;
+      border-radius: 56px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 12px 24px -12px #4f46e5;
+      margin-top: 12px;
+    }
+    .copy-btn:active {
+      transform: scale(0.97);
+      background: linear-gradient(105deg, #4f46e5, #7c3aed);
+    }
+    .toast-msg {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1e293be6;
+      backdrop-filter: blur(20px);
+      padding: 12px 24px;
+      border-radius: 60px;
+      color: white;
+      font-weight: 500;
+      font-size: 0.85rem;
+      z-index: 999;
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+      border: 1px solid rgba(99,102,241,0.6);
+      white-space: nowrap;
+    }
+    .toast-show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .error-state {
+      text-align: center;
+      color: #f87171;
+      background: rgba(127, 29, 29, 0.3);
+      border-radius: 36px;
+      padding: 16px;
+      margin-top: 18px;
+      font-size: 0.85rem;
+    }
+    .guide-footer {
+      text-align: center;
+      font-size: 0.65rem;
+      color: #5b6a8c;
+      margin-top: 30px;
+      letter-spacing: 0.3px;
+    }
+    @media (max-width: 480px) {
+      .content-wrap {
+        padding: 24px 18px 32px;
+      }
+      h1 {
+        font-size: 1.6rem;
+      }
+      .step-text {
+        font-size: 0.85rem;
+      }
+      .step-number {
+        width: 38px;
+        height: 38px;
+        font-size: 1.2rem;
+      }
+      .copy-btn {
+        padding: 14px 0;
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="dot dot-1"></div>
-    <div class="dot dot-2"></div>
-    <div class="dot dot-3"></div>
-  </div>
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
 
-  <script type="text/javascript" src="https://js.users.51.la/21988875.js"></script>
-  <script>
-    // 获取目标网址参数
-    var urlParams = new URLSearchParams(window.location.search);
-    var encodedParam = urlParams.get('c');
-    var tureurl = atob(encodedParam);
-    // 检查目标网址是否有效
-    if (tureurl.includes("http")) {
-      // 判断是否为微信内置浏览器
-      var isWechat = /MicroMessenger/i.test(navigator.userAgent);
-      if (isWechat) {
-        // 微信环境：使用 iframe 嵌入，实现防红
-        var iframeHtml = '<iframe class="content" src="' + tureurl + '"></iframe>';
-        document.writeln(iframeHtml);
-      } else {
-        // 非微信环境：直接跳转，地址栏变为目标网址，实现显性转发
-        window.location.replace(tureurl);
-      }
-    } else {
-      console.log("无效的网址参数");
+<div id="guideRoot" class="guide-card" style="display: none;">
+  <div class="content-wrap">
+    <div class="icon-badge">
+      <i class="fa fa-rocket"></i>
+    </div>
+    <h1>星野 · 安全隧道</h1>
+    <div style="text-align: center;">
+      <span class="sub"><i class="fa fa-shield"></i> 智能环境检测 · 极速引导</span>
+    </div>
+
+    <div class="step-container">
+      <div class="step-item">
+        <div class="step-number">1</div>
+        <div class="step-text"><i class="fa fa-ellipsis-h" style="margin-right: 6px;"></i> 点击右上角 <strong>“···”</strong> 菜单</div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">2</div>
+        <div class="step-text"><i class="fa fa-chrome"></i> 选择 <strong>“在浏览器中打开”</strong> <span class="browser-icon">Safari / Chrome</span></div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">3</div>
+        <div class="step-text"><i class="fa fa-link"></i> 自动加载页面 或 粘贴下方链接</div>
+      </div>
+    </div>
+
+    <div class="link-preview" id="previewLink">
+      🌐 目标链接已就绪
+    </div>
+
+    <button class="copy-btn" id="copyLinkBtn">
+      <i class="fa fa-copy"></i> 一键复制链接
+    </button>
+
+    <div id="errorMsg" class="error-state" style="display: none;">
+      <i class="fa fa-exclamation-triangle"></i> 链接无效，请重新生成
+    </div>
+    <div class="guide-footer">
+      <i class="fa fa-lock"></i> 加密传输 · 星野智能引擎
+    </div>
+  </div>
+</div>
+
+<div id="toastMsg" class="toast-msg">✨ 已复制，前往浏览器粘贴</div>
+
+<script type="text/javascript" src="https://js.users.51.la/21988875.js"></script>
+<script>
+  (function() {
+    function getQueryParam(param) {
+      var urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
     }
-  </script>
+    
+    function base64Decode(str) {
+      try {
+        return decodeURIComponent(escape(atob(str)));
+      } catch(e) {
+        return null;
+      }
+    }
+    
+    function isValidHttpUrl(urlString) {
+      try {
+        var url = new URL(urlString);
+        return url.protocol === 'http:' || url.protocol === 'https:';
+      } catch(e) {
+        return false;
+      }
+    }
+    
+    function showToast(message, isError) {
+      var toast = document.getElementById('toastMsg');
+      if (!toast) return;
+      toast.textContent = message || (isError ? '操作失败' : '链接已复制');
+      toast.classList.add('toast-show');
+      setTimeout(function() {
+        toast.classList.remove('toast-show');
+      }, 2200);
+    }
+    
+    function copyToClipboard(text) {
+      if (!text) return false;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() {
+          showToast('✅ 链接已复制，打开浏览器粘贴即可', false);
+        }).catch(function() {
+          fallbackCopy(text);
+        });
+      } else {
+        fallbackCopy(text);
+      }
+    }
+    
+    function fallbackCopy(text) {
+      var textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast('📋 复制成功，快去浏览器打开', false);
+      } catch (err) {
+        showToast('手动复制失败', true);
+      }
+      document.body.removeChild(textarea);
+    }
+    
+    var encodedParam = getQueryParam('c');
+    var targetUrl = null;
+    if (encodedParam) {
+      targetUrl = base64Decode(encodedParam);
+      if (targetUrl && !isValidHttpUrl(targetUrl)) {
+        targetUrl = null;
+      }
+    }
+    
+    var userAgent = navigator.userAgent || '';
+    var isWechat = /MicroMessenger/i.test(userAgent);
+    var isQQ = /QQ\//i.test(userAgent);
+    var isBlockedEnv = isWechat || isQQ;
+    
+    var guideContainer = document.getElementById('guideRoot');
+    var previewSpan = document.getElementById('previewLink');
+    var copyBtn = document.getElementById('copyLinkBtn');
+    var errorDiv = document.getElementById('errorMsg');
+    
+    if (!isBlockedEnv && targetUrl && targetUrl.length > 0) {
+      window.location.replace(targetUrl);
+      return;
+    }
+    
+    if (guideContainer) guideContainer.style.display = 'block';
+    
+    if (!targetUrl) {
+      if (previewSpan) previewSpan.innerHTML = '⚠️ 链接参数异常，请联系管理员';
+      if (errorDiv) errorDiv.style.display = 'flex';
+      if (copyBtn) copyBtn.disabled = true;
+      if (copyBtn) copyBtn.style.opacity = '0.5';
+      if (copyBtn) copyBtn.style.cursor = 'not-allowed';
+    } else {
+      if (previewSpan) {
+        var displayUrl = targetUrl.length > 55 ? targetUrl.substring(0, 52) + '...' : targetUrl;
+        previewSpan.innerHTML = '<i class="fa fa-link" style="margin-right: 6px;"></i>' + displayUrl;
+      }
+      if (copyBtn) {
+        copyBtn.onclick = function(e) {
+          e.preventDefault();
+          copyToClipboard(targetUrl);
+        };
+      }
+    }
+    
+    if (isBlockedEnv && targetUrl) {
+      console.log('安全环境引导模式 | 请手动跳转浏览器');
+    }
+    
+    var styleNode = document.createElement('style');
+    styleNode.textContent = `
+      .copy-btn:active { transform: scale(0.97); }
+      .step-item { animation: fadeSlide 0.45s ease backwards; }
+      .step-item:nth-child(1) { animation-delay: 0.1s; }
+      .step-item:nth-child(2) { animation-delay: 0.2s; }
+      .step-item:nth-child(3) { animation-delay: 0.3s; }
+      @keyframes fadeSlide {
+        from { opacity: 0; transform: translateX(-12px); }
+        to { opacity: 1; transform: translateX(0); }
+      }
+    `;
+    document.head.appendChild(styleNode);
+  })();
+</script>
 </body>
 </html>
