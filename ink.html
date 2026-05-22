@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#0f172a">
-  <title>星野跳转 | 智能引导</title>
+  <meta name="theme-color" content="#ffffff">
+  <title>Welcome | 个人主页</title>
   <link rel="icon" href="https://cdn.jsdelivr.net/gh/haodai888/static@main/favicon/link.ico" type="image/x-icon">
   <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <style>
@@ -18,7 +18,7 @@
     }
     body {
       min-height: 100vh;
-      background: linear-gradient(145deg, #0a0f1f 0%, #0d1428 45%, #111c2f 100%);
+      background: linear-gradient(135deg, #fefcf5 0%, #f5f3ff 40%, #eef2ff 100%);
       font-family: system-ui, -apple-system, 'Segoe UI', 'SF Pro Text', 'Inter', sans-serif;
       display: flex;
       align-items: center;
@@ -26,8 +26,8 @@
       position: relative;
       overflow-x: hidden;
     }
-    /* 动态流光粒子背景 */
-    .bg-orbs {
+    /* 彩虹泡泡浮动层 - 大小不一，半透明，浅色彩虹色 */
+    .bubble-field {
       position: fixed;
       top: 0;
       left: 0;
@@ -37,55 +37,57 @@
       overflow: hidden;
       pointer-events: none;
     }
-    .orb {
+    .rainbow-bubble {
       position: absolute;
       border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.5;
-      animation: floatBlob 18s infinite alternate ease-in-out;
+      opacity: 0.45;
+      will-change: transform;
+      animation: floatBubble 18s infinite alternate ease-in-out;
+      background: radial-gradient(circle at 30% 35%, rgba(255, 245, 220, 0.7), rgba(255, 200, 180, 0.4));
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02), inset 0 1px 3px rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(1px);
     }
-    .orb1 {
-      width: 50vw;
-      height: 50vw;
-      background: radial-gradient(circle, #6366f1, #a855f7);
-      top: -20vh;
-      left: -15vw;
-      animation-duration: 22s;
+    /* 多种彩虹色系半透明泡泡 */
+    .bubble-1 { width: 140px; height: 140px; top: 10%; left: -30px; background: radial-gradient(circle at 35% 30%, rgba(255, 190, 130, 0.65), rgba(255, 120, 160, 0.35)); animation-duration: 22s; animation-delay: 0s; }
+    .bubble-2 { width: 90px; height: 90px; bottom: 15%; right: 8%; background: radial-gradient(circle at 40% 35%, rgba(170, 220, 250, 0.7), rgba(100, 180, 240, 0.35)); animation-duration: 19s; animation-delay: -2s; }
+    .bubble-3 { width: 200px; height: 200px; top: 55%; left: -60px; background: radial-gradient(circle at 25% 40%, rgba(210, 180, 250, 0.6), rgba(150, 100, 230, 0.3)); animation-duration: 26s; animation-delay: -5s; }
+    .bubble-4 { width: 70px; height: 70px; top: 20%; right: 12%; background: radial-gradient(circle at 30% 30%, rgba(255, 240, 150, 0.7), rgba(255, 200, 80, 0.45)); animation-duration: 16s; animation-delay: -1s; }
+    .bubble-5 { width: 180px; height: 180px; bottom: 5%; left: 15%; background: radial-gradient(circle at 45% 35%, rgba(250, 180, 200, 0.6), rgba(255, 100, 140, 0.3)); animation-duration: 28s; animation-delay: -8s; }
+    .bubble-6 { width: 110px; height: 110px; top: 70%; right: 20%; background: radial-gradient(circle at 30% 40%, rgba(180, 230, 200, 0.7), rgba(80, 200, 130, 0.4)); animation-duration: 21s; animation-delay: -3s; }
+    .bubble-7 { width: 55px; height: 55px; top: 8%; left: 45%; background: radial-gradient(circle at 50% 50%, rgba(255, 210, 150, 0.8), rgba(255, 160, 90, 0.5)); animation-duration: 15s; animation-delay: -6s; }
+    .bubble-8 { width: 250px; height: 250px; bottom: -80px; right: -50px; background: radial-gradient(circle at 40% 45%, rgba(130, 200, 255, 0.5), rgba(70, 130, 240, 0.25)); animation-duration: 32s; animation-delay: -10s; }
+    .bubble-9 { width: 80px; height: 80px; top: 45%; left: 75%; background: radial-gradient(circle at 30% 35%, rgba(245, 200, 230, 0.7), rgba(220, 120, 190, 0.4)); animation-duration: 20s; animation-delay: -4s; }
+    .bubble-10 { width: 130px; height: 130px; top: 80%; left: 50%; background: radial-gradient(circle at 35% 30%, rgba(255, 215, 140, 0.65), rgba(255, 140, 80, 0.35)); animation-duration: 24s; animation-delay: -7s; }
+    .bubble-11 { width: 65px; height: 65px; top: 12%; right: 30%; background: radial-gradient(circle at 45% 40%, rgba(160, 220, 210, 0.7), rgba(70, 180, 160, 0.45)); animation-duration: 17s; animation-delay: -2.5s; }
+    .bubble-12 { width: 160px; height: 160px; bottom: 30%; left: -20px; background: radial-gradient(circle at 25% 30%, rgba(250, 190, 160, 0.6), rgba(230, 110, 100, 0.3)); animation-duration: 27s; animation-delay: -9s; }
+    
+    @keyframes floatBubble {
+      0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+      }
+      30% {
+        transform: translate(18px, -15px) rotate(4deg) scale(1.02);
+      }
+      70% {
+        transform: translate(-12px, 22px) rotate(-2deg) scale(0.98);
+      }
+      100% {
+        transform: translate(10px, 10px) rotate(2deg) scale(1.05);
+      }
     }
-    .orb2 {
-      width: 40vw;
-      height: 40vw;
-      background: radial-gradient(circle, #0ea5e9, #2dd4bf);
-      bottom: -15vh;
-      right: -10vw;
-      animation-duration: 19s;
-      animation-delay: -3s;
-    }
-    .orb3 {
-      width: 35vw;
-      height: 35vw;
-      background: radial-gradient(circle, #f59e0b, #ec489a);
-      top: 40vh;
-      left: 65vw;
-      animation-duration: 25s;
-      opacity: 0.35;
-    }
-    @keyframes floatBlob {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(30px, 40px) scale(1.18); }
-    }
-    /* 主容器 玻璃质感 */
+    
+    /* 主卡片白色玻璃质感 */
     .guide-card {
       position: relative;
-      z-index: 10;
+      z-index: 15;
       max-width: 520px;
       width: 90%;
       margin: 24px auto;
-      background: rgba(20, 28, 45, 0.68);
-      backdrop-filter: blur(18px);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(24px);
       border-radius: 56px;
-      border: 1px solid rgba(99, 102, 241, 0.35);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 0.5px rgba(255, 255, 255, 0.08) inset;
+      border: 1px solid rgba(160, 174, 222, 0.5);
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.15), 0 0 0 0.5px rgba(255, 255, 255, 0.7) inset;
       transition: all 0.4s ease;
       animation: fadeSlideUp 0.65s cubic-bezier(0.2, 0.9, 0.3, 1.1) forwards;
     }
@@ -94,53 +96,39 @@
       100% { opacity: 1; transform: translateY(0); }
     }
     .content-wrap {
-      padding: 32px 28px 40px;
-    }
-    .icon-badge {
-      background: linear-gradient(135deg, #6366f1, #c084fc);
-      width: 70px;
-      height: 70px;
-      border-radius: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-      box-shadow: 0 20px 35px -12px #6366f1;
-    }
-    .icon-badge i {
-      font-size: 38px;
-      color: white;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      padding: 34px 28px 40px;
     }
     h1 {
       font-size: 1.9rem;
       font-weight: 700;
-      background: linear-gradient(115deg, #e0e7ff, #c4b5fd, #a78bfa);
+      background: linear-gradient(120deg, #1e2a4a, #2d3a6e, #1e3a5f);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
       text-align: center;
       letter-spacing: -0.3px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      margin-top: 4px;
     }
     .sub {
       text-align: center;
-      color: #94a3b8;
+      color: #4b5568;
       font-weight: 500;
       font-size: 0.85rem;
-      border-bottom: 1px dashed rgba(99,102,241,0.4);
+      border-bottom: 1px dashed rgba(37, 99, 235, 0.3);
       display: inline-block;
       width: auto;
-      margin: 0 auto 20px;
+      margin: 0 auto 24px;
       padding-bottom: 6px;
     }
     .step-container {
-      background: rgba(15, 23, 42, 0.6);
-      border-radius: 40px;
-      padding: 20px 22px;
-      margin: 24px 0;
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(165, 180, 252, 0.25);
+      background: rgba(248, 250, 252, 0.75);
+      border-radius: 44px;
+      padding: 22px 24px;
+      margin: 20px 0 24px;
+      backdrop-filter: blur(2px);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      box-shadow: 0 6px 12px -8px rgba(0, 0, 0, 0.05);
     }
     .step-item {
       display: flex;
@@ -154,51 +142,47 @@
     .step-number {
       width: 44px;
       height: 44px;
-      background: linear-gradient(125deg, #1e293b, #0f172a);
-      border-radius: 28px;
+      background: linear-gradient(125deg, #f1f5f9, #e6edf5);
+      border-radius: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
       font-size: 1.4rem;
-      color: #a5b4fc;
-      border: 1px solid #334155;
-      box-shadow: 0 8px 14px -6px #00000030;
+      color: #2563eb;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 8px 14px -8px rgba(0, 0, 0, 0.08);
     }
     .step-text {
       flex: 1;
       font-weight: 520;
       font-size: 1rem;
-      color: #e2e8f0;
+      color: #1e293b;
       letter-spacing: -0.2px;
     }
     .step-text strong {
-      color: #facc15;
+      color: #eab308;
       font-weight: 700;
-    }
-    .step-text .browser-icon {
-      background: #2d374b;
+      background: rgba(234, 179, 8, 0.12);
+      padding: 2px 8px;
+      border-radius: 30px;
       display: inline-block;
-      padding: 4px 10px;
-      border-radius: 40px;
-      font-size: 0.7rem;
-      margin-left: 6px;
-      font-weight: 500;
     }
     .link-preview {
-      background: #0f172a80;
+      background: #f1f5f9;
       padding: 14px 16px;
-      border-radius: 28px;
-      margin: 20px 0 18px;
-      border: 1px solid #2d3a5e;
+      border-radius: 32px;
+      margin: 18px 0 20px;
+      border: 1px solid #e2e8f0;
       word-break: break-all;
       font-family: 'SF Mono', 'Fira Code', monospace;
       font-size: 0.75rem;
-      color: #cbd5e6;
+      color: #1f2a44;
       text-align: center;
+      box-shadow: inset 0 1px 2px #00000008, 0 2px 5px rgba(0,0,0,0.02);
     }
     .copy-btn {
-      background: linear-gradient(105deg, #6366f1, #8b5cf6);
+      background: linear-gradient(105deg, #2563eb, #4f46e5);
       width: 100%;
       border: none;
       padding: 16px 0;
@@ -212,19 +196,24 @@
       gap: 12px;
       cursor: pointer;
       transition: all 0.25s ease;
-      box-shadow: 0 12px 24px -12px #4f46e5;
-      margin-top: 12px;
+      box-shadow: 0 12px 22px -12px #3b82f6;
+      margin-top: 10px;
     }
     .copy-btn:active {
       transform: scale(0.97);
-      background: linear-gradient(105deg, #4f46e5, #7c3aed);
+      background: linear-gradient(105deg, #1d4ed8, #4338ca);
+    }
+    .copy-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
     }
     .toast-msg {
       position: fixed;
       bottom: 28px;
       left: 50%;
       transform: translateX(-50%) translateY(20px);
-      background: #1e293be6;
+      background: #1e293bdb;
       backdrop-filter: blur(20px);
       padding: 12px 24px;
       border-radius: 60px;
@@ -235,32 +224,24 @@
       opacity: 0;
       transition: opacity 0.2s, transform 0.2s;
       pointer-events: none;
-      border: 1px solid rgba(99,102,241,0.6);
+      border: 1px solid rgba(59,130,246,0.5);
       white-space: nowrap;
+      font-family: system-ui;
     }
     .toast-show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
-    .error-state {
-      text-align: center;
-      color: #f87171;
-      background: rgba(127, 29, 29, 0.3);
-      border-radius: 36px;
-      padding: 16px;
-      margin-top: 18px;
-      font-size: 0.85rem;
-    }
     .guide-footer {
       text-align: center;
       font-size: 0.65rem;
-      color: #5b6a8c;
-      margin-top: 30px;
+      color: #6c7a91;
+      margin-top: 32px;
       letter-spacing: 0.3px;
     }
     @media (max-width: 480px) {
       .content-wrap {
-        padding: 24px 18px 32px;
+        padding: 26px 18px 34px;
       }
       h1 {
         font-size: 1.6rem;
@@ -277,22 +258,35 @@
         padding: 14px 0;
         font-size: 1rem;
       }
+      .step-container {
+        padding: 18px 18px;
+      }
+      .rainbow-bubble {
+        opacity: 0.4;
+      }
     }
   </style>
 </head>
 <body>
-<div class="bg-orbs">
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="orb orb3"></div>
+<!-- 彩虹泡泡层：大小不一，浅色半透明，动态浮动 -->
+<div class="bubble-field">
+  <div class="rainbow-bubble bubble-1"></div>
+  <div class="rainbow-bubble bubble-2"></div>
+  <div class="rainbow-bubble bubble-3"></div>
+  <div class="rainbow-bubble bubble-4"></div>
+  <div class="rainbow-bubble bubble-5"></div>
+  <div class="rainbow-bubble bubble-6"></div>
+  <div class="rainbow-bubble bubble-7"></div>
+  <div class="rainbow-bubble bubble-8"></div>
+  <div class="rainbow-bubble bubble-9"></div>
+  <div class="rainbow-bubble bubble-10"></div>
+  <div class="rainbow-bubble bubble-11"></div>
+  <div class="rainbow-bubble bubble-12"></div>
 </div>
 
 <div id="guideRoot" class="guide-card" style="display: none;">
   <div class="content-wrap">
-    <div class="icon-badge">
-      <i class="fa fa-rocket"></i>
-    </div>
-    <h1>星野 · 安全隧道</h1>
+    <h1>Welcome</h1>
     <div style="text-align: center;">
       <span class="sub"><i class="fa fa-shield"></i> 智能环境检测 · 极速引导</span>
     </div>
@@ -304,7 +298,7 @@
       </div>
       <div class="step-item">
         <div class="step-number">2</div>
-        <div class="step-text"><i class="fa fa-chrome"></i> 选择 <strong>“在浏览器中打开”</strong> <span class="browser-icon">Safari / Chrome</span></div>
+        <div class="step-text"><i class="fa fa-chrome"></i> 选择 <strong>“在浏览器中打开”</strong></div>
       </div>
       <div class="step-item">
         <div class="step-number">3</div>
@@ -320,16 +314,13 @@
       <i class="fa fa-copy"></i> 一键复制链接
     </button>
 
-    <div id="errorMsg" class="error-state" style="display: none;">
-      <i class="fa fa-exclamation-triangle"></i> 链接无效，请重新生成
-    </div>
     <div class="guide-footer">
-      <i class="fa fa-lock"></i> 加密传输 · 星野智能引擎
+      <i class="fa fa-lock"></i> ICP备案号 ： 蜀ICP备12014994号-1
     </div>
   </div>
 </div>
 
-<div id="toastMsg" class="toast-msg">✨ 已复制，前往浏览器粘贴</div>
+<div id="toastMsg" class="toast-msg">已复制，前往浏览器粘贴访问即可</div>
 
 <script type="text/javascript" src="https://js.users.51.la/21988875.js"></script>
 <script>
@@ -370,7 +361,7 @@
       if (!text) return false;
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(function() {
-          showToast('✅ 链接已复制，打开浏览器粘贴即可', false);
+          showToast('链接已复制，打开浏览器粘贴访问即可', false);
         }).catch(function() {
           fallbackCopy(text);
         });
@@ -386,9 +377,9 @@
       textarea.select();
       try {
         document.execCommand('copy');
-        showToast('📋 复制成功，快去浏览器打开', false);
+        showToast('复制成功，快去浏览器打开', false);
       } catch (err) {
-        showToast('手动复制失败', true);
+        showToast('复制失败', true);
       }
       document.body.removeChild(textarea);
     }
@@ -410,7 +401,6 @@
     var guideContainer = document.getElementById('guideRoot');
     var previewSpan = document.getElementById('previewLink');
     var copyBtn = document.getElementById('copyLinkBtn');
-    var errorDiv = document.getElementById('errorMsg');
     
     if (!isBlockedEnv && targetUrl && targetUrl.length > 0) {
       window.location.replace(targetUrl);
@@ -420,24 +410,31 @@
     if (guideContainer) guideContainer.style.display = 'block';
     
     if (!targetUrl) {
-      if (previewSpan) previewSpan.innerHTML = '⚠️ 链接参数异常，请联系管理员';
-      if (errorDiv) errorDiv.style.display = 'flex';
-      if (copyBtn) copyBtn.disabled = true;
-      if (copyBtn) copyBtn.style.opacity = '0.5';
-      if (copyBtn) copyBtn.style.cursor = 'not-allowed';
+      if (previewSpan) {
+        previewSpan.innerHTML = '<i class="fa fa-link" style="margin-right: 6px;"></i>';
+      }
+      if (copyBtn) {
+        copyBtn.disabled = true;
+        copyBtn.style.opacity = '0.5';
+        copyBtn.style.cursor = 'not-allowed';
+        copyBtn.onclick = null;
+      }
     } else {
       if (previewSpan) {
         var displayUrl = targetUrl.length > 55 ? targetUrl.substring(0, 52) + '...' : targetUrl;
         previewSpan.innerHTML = '<i class="fa fa-link" style="margin-right: 6px;"></i>' + displayUrl;
       }
       if (copyBtn) {
+        copyBtn.disabled = false;
+        copyBtn.style.opacity = '1';
+        copyBtn.style.cursor = 'pointer';
         copyBtn.onclick = function(e) {
           e.preventDefault();
           copyToClipboard(targetUrl);
         };
       }
     }
-    
+
     if (isBlockedEnv && targetUrl) {
       console.log('安全环境引导模式 | 请手动跳转浏览器');
     }
