@@ -26,7 +26,6 @@
       position: relative;
       overflow-x: hidden;
     }
-    /* 彩虹泡泡浮动层 - 大小不一，半透明，浅色彩虹色 */
     .bubble-field {
       position: fixed;
       top: 0;
@@ -47,7 +46,6 @@
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02), inset 0 1px 3px rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(1px);
     }
-    /* 多种彩虹色系半透明泡泡 */
     .bubble-1 { width: 140px; height: 140px; top: 10%; left: -30px; background: radial-gradient(circle at 35% 30%, rgba(255, 190, 130, 0.65), rgba(255, 120, 160, 0.35)); animation-duration: 22s; animation-delay: 0s; }
     .bubble-2 { width: 90px; height: 90px; bottom: 15%; right: 8%; background: radial-gradient(circle at 40% 35%, rgba(170, 220, 250, 0.7), rgba(100, 180, 240, 0.35)); animation-duration: 19s; animation-delay: -2s; }
     .bubble-3 { width: 200px; height: 200px; top: 55%; left: -60px; background: radial-gradient(circle at 25% 40%, rgba(210, 180, 250, 0.6), rgba(150, 100, 230, 0.3)); animation-duration: 26s; animation-delay: -5s; }
@@ -76,7 +74,6 @@
       }
     }
     
-    /* 主卡片白色玻璃质感 */
     .guide-card {
       position: relative;
       z-index: 15;
@@ -268,7 +265,6 @@
   </style>
 </head>
 <body>
-<!-- 彩虹泡泡层：大小不一，浅色半透明，动态浮动 -->
 <div class="bubble-field">
   <div class="rainbow-bubble bubble-1"></div>
   <div class="rainbow-bubble bubble-2"></div>
@@ -294,7 +290,7 @@
     <div class="step-container">
       <div class="step-item">
         <div class="step-number">1</div>
-        <div class="step-text"><i class="fa fa-ellipsis-h" style="margin-right: 6px;"></i> 点击右上角 <strong>“···”</strong> 菜单</div>
+        <div class="step-text"><i class="fa fa-ellipsis-h"></i> 点击右上角 <strong>···</strong> 菜单</div>
       </div>
       <div class="step-item">
         <div class="step-number">2</div>
@@ -302,7 +298,7 @@
       </div>
       <div class="step-item">
         <div class="step-number">3</div>
-        <div class="step-text"><i class="fa fa-link"></i> 自动加载页面 或 粘贴下方链接</div>
+        <div class="step-text"><i class="fa fa-link"></i>或点击下方按钮复制链接，在浏览器中打开</div>
       </div>
     </div>
 
@@ -311,7 +307,7 @@
     </div>
 
     <button class="copy-btn" id="copyLinkBtn">
-      <i class="fa fa-copy"></i> 一键复制链接
+      <i class="fa fa-copy"></i> 复制链接
     </button>
 
     <div class="guide-footer">
